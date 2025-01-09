@@ -1,0 +1,15 @@
+name: "Custom Action"
+description: "Añadir meme al README dependiendo del resultado del test"
+inputs:
+  frase_positiva:
+    description: "Meme de success"
+    required: true
+  frase_negativa:
+    description: "Meme de error"
+    required: true
+  resultado_test:
+    description: "Resultado del test"
+    required: true
+  runs:
+    using: "node20"
+    main: "src/dist/index.js"
