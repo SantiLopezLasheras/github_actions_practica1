@@ -4,7 +4,7 @@ name: main_workflow
 on:
   push:
     branches:
-      - nodejs_environment_job
+      - nodejs_test_error
 
 jobs:
   linter-execution:
@@ -16,7 +16,7 @@ jobs:
     steps:
       # Step 1: Checkout code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Step 2: Setup node version
       - name: Setting node version
@@ -38,11 +38,16 @@ jobs:
     needs: linter-execution
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Jest
         run: npm install jest --legacy-peer-deps
       - name: Run Jest Test
         run: npm run test
+        id: jest
+        continue-on-error: true
+      - name: Fails
+        if: steps.jest.outcome != 'success'
+        run: echo "Se ha producido un error" && exit 1
   environment_test_execution:
     runs-on: ubuntu-latest
     needs: [linter-execution, test-execution]
