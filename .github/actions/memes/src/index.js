@@ -10,7 +10,7 @@ async function main() {
     const img = res === "success" ? "stonks" : "sarcasticbear";
     const URL = `https://api.memegen.link/images/${img}/${
       res === "success" ? success_msg : error_msg
-    }`;
+    }.png`;
 
     const old_readme = await fs.readFile("./OldREADME.md", "utf8");
     const new_readme = old_readme + '<img src="${URL}" />';
