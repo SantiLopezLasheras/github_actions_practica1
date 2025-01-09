@@ -1,0 +1,35 @@
+name: despliegue_workflow
+
+on:
+  push:
+    branches:
+      - react_app_deploy
+
+jobs:
+  build-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: install & build
+        run: npm install && npm run build
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: react-project
+          path: build/
+  deploy-job:
+    needs: build-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: react-project
+      - name: Deploy on Surge.sh
+        uses: dswistowski/surge-sh-action@v1.1.0
+        with:
+          domain: "react-app-santi.surge.sh"
+          project: "."
+          login: ${{ secrets.SURGE_LOGIN }}
+          token: ${{ secrets.SURGE_TOKEN }}
