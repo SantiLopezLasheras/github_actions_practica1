@@ -12,7 +12,7 @@ try {
   )}`;
 
   bot.sendMessage(chatID, message);
-  core.setOutput("msg", "Mensaje enviado correctamente");
+  core.setOutput("msg", "Mensaje enviado correctamente.");
 } catch (e) {
   core.setFailed(e.message);
 }
